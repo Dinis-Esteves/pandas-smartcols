@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+dynamic = ["version"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smartcols"
+[tool.setuptools.dynamic]
+version = { attr = "smartcols.__version__.__version__" }
+authors = [{ name = "Dinis Esteves" }]
+description = "Pandas column manipulation toolkit"
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = ["pandas>=2.0", "numpy>=1.24"]
+python-requires = ">=3.9"
