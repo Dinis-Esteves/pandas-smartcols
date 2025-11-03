@@ -13,7 +13,7 @@ Utilities for reordering and grouping pandas DataFrame columns without the usual
 ## Installation
 
 ```bash
-pip install smartcols
+pip install pandas-smartcols
 ```
 
 ## Quick start
