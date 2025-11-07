@@ -80,6 +80,49 @@ nan_groups = group_columns(
 
 Every mutating helper returns the reordered DataFrame unless `inplace=True`, in which case it returns `None` and the supplied DataFrame is updated.
 
+## Detailed API reference
+
+### `swap_columns(df, col1, col2, *, inplace=False)`
+- **df** (`pd.DataFrame`): DataFrame to operate on.
+- **col1**, **col2** (`str`): Column names to swap; both must exist.
+- **inplace** (`bool`, default `False`): Mutate `df` instead of returning a reordered copy.
+
+### `move_after(df, cols_to_move, target_col, *, inplace=False)`
+- **cols_to_move** (`str | Iterable[str]`): Column(s) to relocate; duplicates raise an error and relative order is preserved.
+- **target_col** (`str`): Column after which the block will be inserted.
+- **inplace**: Same semantics as above.
+
+### `move_before(df, cols_to_move, target_col, *, inplace=False)`
+- Parameters mirror `move_after`, but the block is inserted before `target_col`.
+
+### `move_to_front(df, cols_to_move, *, inplace=False)` / `move_to_end(...)`
+- **cols_to_move**: Column(s) pushed to the beginning or end while keeping the remaining columns in their original relative order.
+- **inplace**: Mutate vs return copy.
+
+### `sort_columns(df, by='default', order='ascending', target='', key=None)`
+- **by** (`str`): One of `default`, `nan_ratio`, `variance`, `std_dev`, `correlation`, `mean`, `custom`.
+- **order** (`'ascending' | 'descending'`): Controls ordering direction for each strategy.
+- **target** (`str`): Required when `by='correlation'`; column to correlate against.
+- **key** (`Callable`): Required when `by='custom'`; receives each column name and should return a sortable key.
+- Returns reordered DataFrame (no inplace option—use the return value).
+
+### `group_columns(df, by='dtype', *, pattern='', meta=None, key=None, sort_within=True)`
+- **by** (`str`): `dtype`, `nan_ratio`, `regex`, `meta`, or `custom`.
+- **pattern** (`str`): Regex pattern used for `regex` grouping.
+- **meta** (`dict[str, str]`): Mapping of column names/prefixes → group labels for `meta`.
+- **key** (`Callable`): Custom grouping key; receives a column name, returns group name.
+- **sort_within** (`bool`): Sort columns alphabetically inside each group.
+- Returns `dict[str, pd.DataFrame]` keyed by group label.
+
+### `group_columns_flattened(...)`
+- Same parameters as `group_columns`, but returns a single DataFrame with grouped sections stacked (useful for reporting).
+
+### `save_column_order(df)` / `apply_column_order(df, column_order)`
+- `save_column_order` captures the current order as a list of column names.
+- `apply_column_order` validates that every column exists and reorders accordingly (supports the same `inplace` behavior via `df[:] = ...` if you choose to mutate manually).
+
+All helpers validate their inputs and raise `ValueError`/`KeyError` with the offending parameter name when something is missing.
+
 ## Testing
 
 ```bash

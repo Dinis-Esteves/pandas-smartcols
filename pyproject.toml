@@ -1,15 +1,20 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-dynamic = ["version"]
+requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "smartcols"
-[tool.setuptools.dynamic]
-version = { attr = "smartcols.__version__.__version__" }
-authors = [{ name = "Dinis Esteves" }]
+name = "pandas-smartcols"
+dynamic = ["version"]
 description = "Pandas column manipulation toolkit"
 readme = "README.md"
 license = { file = "LICENSE" }
+authors = [{ name = "Dinis Esteves" }]
+urls = { "Homepage" = "https://github.com/Dinis-Esteves/pandas-smartcols", "Bug Tracker" = "https://github.com/Dinis-Esteves/pandas-smartcols/issues", "Source Code" = "https://github.com/Dinis-Esteves/pandas-smartcols" }
+requires-python = ">=3.9"
 dependencies = ["pandas>=2.0", "numpy>=1.24"]
-python-requires = ">=3.9"
+
+[tool.setuptools.dynamic]
+version = { attr = "smartcols.__version__.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
